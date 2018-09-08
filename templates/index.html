@@ -1,29 +1,26 @@
 <section class="section">
   <div class="container">
-    <h1 class="title">newsfeed</h1>
     <h2 class="subtitle">a simple feed reader &amp; aggregator</h2>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
-    <div class="columns">
-        {{ range .Content }}
-        <div class="column">
-            <nav class="panel">
-              <a class="panel-heading" href="{{ .Link }}">
-                <span class="panel-icon"><i class="fas fa-rss-square" aria-hidden="true"></i></span>
-                {{ .Title }}{{ if .UpdatedParsed }}<small>, {{ .UpdatedParsed.Format `02.01.2006` }}</small>{{ end }}
-              </a>
-              {{ range .Items }}
-              <a class="panel-block" href="{{ .Link }}">
-                <span class="panel-icon"><i class="fas fa-external-link-alt" aria-hidden="true"></i></span>
-                {{ .Title }}
-              </a>
-              {{ end }}
-            </nav>
-        </div>
-        {{ end }}
-    </div>
+      {{ range $idx, $feed := .Content }}
+        {{ if isEvenNumber $idx }}<div class="columns">{{ end }}
+          <div class="column">
+              <nav class="panel">
+                <p class="panel-heading">
+                  <a href="{{ .Link }}">
+                    <span class="tag is-white is-rounded">{{ len $feed.Items }}</span>
+                    {{ $feed.Title }}{{ if $feed.UpdatedParsed }}<span class="is-size-7 has-text-grey">, {{ $feed.UpdatedParsed.Format `02.01.2006` }}</span>{{ end }}
+                  </a>
+                </p>
+                {{ range $feed.Items }}
+                <a class="panel-block" href="{{ .Link }}">
+                  <span class="panel-icon is-small"><i class="fas fa-external-link-alt fa-xs" aria-hidden="true"></i></span>
+                  {{ .Title }}
+                </a>
+                {{ end }}
+              </nav>
+          </div>
+        {{ if isOddNumber $idx }}</div>{{ end }}
+      {{ end }}
+      {{ if len .Content | isOddNumber }}</div>{{ end }}
   </div>
 </section>
