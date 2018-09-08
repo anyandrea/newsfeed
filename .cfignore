@@ -1,0 +1,15 @@
+.env_mysql
+.git
+.gitmodules
+.gitignore
+.goplayrc
+.travis.yml
+.circleci
+cf
+gin-bin
+Makefile
+LICENSE
+NOTICE
+README.md
+_fixtures
+scripts

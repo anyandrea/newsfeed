@@ -1,0 +1,20 @@
+---
+applications:
+- name: newsfeed
+  memory: 64M
+  disk_quota: 128M
+  instances: 2
+  buildpack: go_buildpack
+  hosts:
+  - newsfeed
+  # for blue-green deployment
+  - newsfeed-blue-green
+  domains:
+  - scapp.io
+  - applicationcloud.io
+  services:
+  - newsfeeddb
+  env:
+    GOPACKAGENAME: github.com/anyandrea/newsfeed
+  command: newsfeed
+  path: .
