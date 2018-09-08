@@ -20,11 +20,11 @@ func Index(db newsfeeddb.NewsFeedDB) func(rw http.ResponseWriter, req *http.Requ
 		var feeds []*gofeed.Feed
 		parser := gofeed.NewParser()
 		urls := []string{
+			"https://www.iracing.com/category/news/sim-racing-news/feed/",
+			"https://www.heise.de/newsticker/heise-atom.xml",
 			"https://news.ycombinator.com/rss",
 			"https://www.reddit.com/r/iracing.rss",
-			"https://www.heise.de/newsticker/heise-atom.xml",
 			"https://www.reddit.com/r/simracing.rss",
-			"https://www.iracing.com/category/news/sim-racing-news/feed/",
 		}
 		for _, url := range urls {
 			feed, err := parser.ParseURL(url)
