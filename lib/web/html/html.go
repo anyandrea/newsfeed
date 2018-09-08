@@ -6,6 +6,7 @@ import (
 
 	"github.com/anyandrea/newsfeed/lib/database/newsfeeddb"
 	"github.com/anyandrea/newsfeed/lib/web"
+	"github.com/mmcdole/gofeed"
 )
 
 func Index(db newsfeeddb.NewsFeedDB) func(rw http.ResponseWriter, req *http.Request) {
@@ -14,6 +15,29 @@ func Index(db newsfeeddb.NewsFeedDB) func(rw http.ResponseWriter, req *http.Requ
 			Title:  "Newsfeed",
 			Active: "feeds",
 		}
+
+		// get feeds
+		var feeds []*gofeed.Feed
+		parser := gofeed.NewParser()
+		urls := []string{
+			"https://news.ycombinator.com/rss",
+			"https://www.reddit.com/r/iracing.rss",
+			"https://www.heise.de/newsticker/heise-atom.xml",
+			"https://www.reddit.com/r/simracing.rss",
+			"https://www.iracing.com/category/news/sim-racing-news/feed/",
+		}
+		for _, url := range urls {
+			feed, err := parser.ParseURL(url)
+			// if err != nil {
+			// 	Error(rw, err)
+			// 	return
+			// }
+			if err == nil {
+				feeds = append(feeds, feed)
+			}
+		}
+		page.Content = feeds
+
 		web.Render().HTML(rw, http.StatusOK, "index", page)
 	}
 }

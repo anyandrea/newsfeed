@@ -9,6 +9,9 @@ import:
   - source/file
 - package: github.com/unrolled/render
 - package: github.com/urfave/negroni
+- package: github.com/mmcdole/gofeed
+- package: github.com/PuerkitoBio/goquery
+  version: ^1.4.1
 testImport:
 - package: github.com/stretchr/testify
   subpackages:

@@ -8,3 +8,25 @@
     </article>
   </div>
 </section>
+
+<section class="section">
+  <div class="container">
+  	{{ range .Content }}
+    <label class="label">{{ .Title }}{{ if .UpdatedParsed }}<small>, {{ .UpdatedParsed.Format `02.01.2006` }}</small>{{ end }}</label>
+    <table class="table is-bordered is-striped is-fullwidth">
+      <thead>
+        <tr>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ range .Items }}
+        <tr>
+          <td><a href="{{ .Link }}">{{ .Title }}</a></td>
+        </tr>
+        {{ end }}
+      </tbody>
+    </table>
+    {{ end }}
+  </div>
+</section>
