@@ -5,5 +5,6 @@ CREATE TABLE IF NOT EXISTS user (
     name              VARCHAR(32) NOT NULL UNIQUE,
     email             VARCHAR(64) NOT NULL UNIQUE,
     role              VARCHAR(10) NOT NULL,
+    active            BOOLEAN,
     PRIMARY KEY (pk_user_id)
 );
