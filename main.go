@@ -55,8 +55,8 @@ func setupDatabase() newsfeeddb.NewsFeedDB {
 func spawnHousekeeping(db newsfeeddb.NewsFeedDB) {
 	go func(db newsfeeddb.NewsFeedDB) {
 		for {
-			// retention policy of minimum 20 entries per feed
-			if err := db.Housekeeping(20); err != nil {
+			// retention policy of maximum 50 entries per feed
+			if err := db.Housekeeping(50); err != nil {
 				log.Println("Feed housekeeping failed")
 				log.Fatal(err)
 			}
