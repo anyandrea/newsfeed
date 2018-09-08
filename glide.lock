@@ -1,0 +1,39 @@
+hash: 3b77e158816ef9d9730c4ae3695ed35728eef1d26cb3e97f45840828801a4422
+updated: 2018-09-08T11:46:31.936127704+02:00
+imports:
+- name: github.com/cloudfoundry-community/go-cfenv
+  version: f920e9562d5f951cbf11785728f67258c38a10d0
+- name: github.com/go-sql-driver/mysql
+  version: 99ff426eb706cffe92ff3d058e168b278cabf7c7
+- name: github.com/gorilla/mux
+  version: 9e1f5955c0d22b55d9e20d6faa28589f83b2faca
+- name: github.com/mattes/migrate
+  version: 4768a648fbd9e04389a73a21139d14a4ccb1a61a
+  subpackages:
+  - database
+  - database/mysql
+  - source
+  - source/file
+- name: github.com/mitchellh/mapstructure
+  version: fa473d140ef3c6adf42d6b391fe76707f1f243c8
+- name: github.com/unrolled/render
+  version: 4206df6ff70175d219fdb4672ae157fbed820103
+- name: github.com/urfave/negroni
+  version: c6a59be0ce122566695fbd5e48a77f8f10c8a63a
+- name: google.golang.org/appengine
+  version: 03cac3b07182cfb08c0d0c0b6ee72a1ceb151c92
+  subpackages:
+  - cloudsql
+testImports:
+- name: github.com/davecgh/go-spew
+  version: d8f796af33cc11cb798c1aaeb27a4ebc5099927d
+  subpackages:
+  - spew
+- name: github.com/pmezard/go-difflib
+  version: 792786c7400a136282c1664665ae0a8db921c6c2
+  subpackages:
+  - difflib
+- name: github.com/stretchr/testify
+  version: 12b6f73e6084dad08a7c6e575284b177ecafbc71
+  subpackages:
+  - assert

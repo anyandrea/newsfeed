@@ -1,0 +1,15 @@
+package: github.com/anyandrea/newsfeed
+import:
+- package: github.com/cloudfoundry-community/go-cfenv
+- package: github.com/go-sql-driver/mysql
+- package: github.com/gorilla/mux
+- package: github.com/mattes/migrate
+  subpackages:
+  - database/mysql
+  - source/file
+- package: github.com/unrolled/render
+- package: github.com/urfave/negroni
+testImport:
+- package: github.com/stretchr/testify
+  subpackages:
+  - assert

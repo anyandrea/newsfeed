@@ -21,6 +21,6 @@ while [[ ! mysqladmin ping -h"127.0.0.1" --silent ]]; do
 done
 
 mysql --host=127.0.0.1 --user=blubb --password=blabb --database=newsfeed_db -v < lib/database/migrations/mysql/001_newsfeeddb_user_tables.up.sql
-mysql --host=127.0.0.1 --user=blubb --password=blabb --database=newsfeed_db -v < lib/database/migrations/mysql/002_newsfeeddb_feed_tables.up.sql
-mysql --host=127.0.0.1 --user=blubb --password=blabb --database=newsfeed_db -v < _fixtures/users.sql
-mysql --host=127.0.0.1 --user=blubb --password=blabb --database=newsfeed_db -v < _fixtures/feeds.sql
+#mysql --host=127.0.0.1 --user=blubb --password=blabb --database=newsfeed_db -v < lib/database/migrations/mysql/002_newsfeeddb_feed_tables.up.sql
+#mysql --host=127.0.0.1 --user=blubb --password=blabb --database=newsfeed_db -v < _fixtures/users.sql
+#mysql --host=127.0.0.1 --user=blubb --password=blabb --database=newsfeed_db -v < _fixtures/feeds.sql

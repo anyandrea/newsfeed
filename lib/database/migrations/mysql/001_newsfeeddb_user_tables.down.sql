@@ -1,0 +1,2 @@
+-- user
+DROP TABLE user;
