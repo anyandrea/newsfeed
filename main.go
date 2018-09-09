@@ -46,32 +46,32 @@ func setupDatabase() newsfeeddb.NewsFeedDB {
 	db := newsfeeddb.NewNewsFeedDB(adapter)
 
 	// background jobs
-	spawnHousekeeping(db)
-	spawnFeedCollection(db)
+	go housekeeping(db)
+	go feedCollection(db)
 
 	return db
 }
 
-func spawnHousekeeping(db newsfeeddb.NewsFeedDB) {
-	go func(db newsfeeddb.NewsFeedDB) {
-		for {
-			// retention policy of maximum 50 entries per feed
-			if err := db.Housekeeping(50); err != nil {
-				log.Println("Feed housekeeping failed")
-				log.Fatal(err)
-			}
-			time.Sleep(12 * time.Hour)
+func housekeeping(db newsfeeddb.NewsFeedDB) {
+	for {
+		// retention policy of maximum 50 entries per feed
+		if err := db.Housekeeping(50); err != nil {
+			log.Println("Feed housekeeping failed")
+			log.Fatal(err)
 		}
-	}(db)
+		time.Sleep(12 * time.Hour)
+	}
 }
 
-func spawnFeedCollection(db newsfeeddb.NewsFeedDB) {
-	go func(db newsfeeddb.NewsFeedDB) {
-		for {
-			// TODO: refresh feeds
-			time.Sleep(1 * time.Hour)
+func feedCollection(db newsfeeddb.NewsFeedDB) {
+	for {
+		// go through all subscribed feeds and update them
+		if err := db.FetchAllFeeds(); err != nil {
+			log.Println("Feed collection failed")
+			log.Fatal(err)
 		}
-	}(db)
+		time.Sleep(1 * time.Hour)
+	}
 }
 
 func startHTTPServer(db newsfeeddb.NewsFeedDB) *http.Server {

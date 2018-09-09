@@ -1,8 +1,9 @@
 -- feed
 CREATE TABLE IF NOT EXISTS feed (
     pk_feed_id      INTEGER NOT NULL AUTO_INCREMENT,
-    title           VARCHAR(64) NOT NULL,
-    link            VARCHAR(128) NOT NULL UNIQUE,
+    title           VARCHAR(255) NOT NULL,
+    link            VARCHAR(255) NOT NULL,
+    feed_link       VARCHAR(255) NOT NULL UNIQUE,
     updated         TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     fetched         TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (pk_feed_id)
@@ -12,12 +13,13 @@ CREATE TABLE IF NOT EXISTS feed (
 CREATE TABLE IF NOT EXISTS item (
     pk_feed_item_id     INTEGER NOT NULL AUTO_INCREMENT,
     fk_feed_id          INTEGER NOT NULL,
-    title               VARCHAR(64) NOT NULL,
-    link                VARCHAR(128) NOT NULL,
+    title               VARCHAR(255) NOT NULL,
+    link                VARCHAR(255) NOT NULL,
     updated             TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     published           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (pk_feed_item_id),
-    FOREIGN KEY (fk_feed_id) REFERENCES feed (pk_feed_id) ON DELETE CASCADE
+    FOREIGN KEY (fk_feed_id) REFERENCES feed (pk_feed_id) ON DELETE CASCADE,
+    CONSTRAINT uc_feed_item UNIQUE (fk_feed_id, title)
 );
 
 -- subscription

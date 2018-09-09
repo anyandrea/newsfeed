@@ -5,7 +5,7 @@ set -e
 
 # =============================================================================================
 if [[ "$(basename $PWD)" == "scripts" ]]; then
-	cd ..
+    cd ..
 fi
 echo $PWD
 
@@ -16,7 +16,7 @@ source .env_mysql
 echo "setting up newsfeeddb ..."
 
 while [[ ! mysqladmin ping -h"127.0.0.1" --silent ]]; do
-	echo "waiting for mysql to be ready ..."
+    echo "waiting for mysql to be ready ..."
     sleep 2
 done
 

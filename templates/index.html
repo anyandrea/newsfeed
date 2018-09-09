@@ -6,9 +6,9 @@
           <div class="column">
               <nav class="panel">
                 <p class="panel-heading">
-                  <a href="{{ .Link }}">
+                  <a href="{{ $feed.Link }}">
                     <span class="tag is-white is-rounded">{{ len $feed.Items }}</span>
-                    {{ $feed.Title }}{{ if $feed.UpdatedParsed }}<span class="is-size-7 has-text-grey">, {{ $feed.UpdatedParsed.Format `02.01.2006` }}</span>{{ end }}
+                    {{ $feed.Title }}{{ if $feed.Updated }}<span class="is-size-7 has-text-grey">, {{ $feed.Updated.Format `02.01.2006` }}</span>{{ end }}
                   </a>
                 </p>
                 {{ range $feed.Items }}

@@ -1,30 +1,5 @@
 package newsfeeddb
 
-import (
-	"database/sql"
-
-	"github.com/anyandrea/newsfeed/lib/database"
-)
-
-type NewsFeedDB interface {
-	GetUsers() ([]User, error)
-	GetSubscriptionsByUserId(int) ([]Subscription, error)
-	GetSubscriptionsByFeedId(int) ([]Subscription, error)
-	GetFeedById(int) (Feed, error)
-	GetFeedsByUserId(int) ([]Feed, error)
-	GetItemsByFeedId(int) ([]Item, error)
-	Housekeeping(int) error
-}
-
-type newsfeedDB struct {
-	*sql.DB
-	DatabaseType string
-}
-
-func NewNewsFeedDB(adapter database.Adapter) NewsFeedDB {
-	return &newsfeedDB{adapter.GetDatabase(), adapter.GetType()}
-}
-
 func (db *newsfeedDB) GetUsers() ([]User, error) {
 	rows, err := db.Query(`
 		select
@@ -131,6 +106,7 @@ func (db *newsfeedDB) GetFeedById(feedId int) (Feed, error) {
 			f.pk_feed_id,
 			f.title,
 			f.link,
+			f.feed_link,
 			f.updated,
 			f.fetched
 		from feed f
@@ -150,7 +126,7 @@ func (db *newsfeedDB) GetFeedById(feedId int) (Feed, error) {
 	var feed Feed
 	for rows.Next() {
 		// get feed
-		if err := rows.Scan(&feed.Id, &feed.Title, &feed.Link, &feed.Updated, &feed.Fetched); err != nil {
+		if err := rows.Scan(&feed.Id, &feed.Title, &feed.Link, &feed.FeedLink, &feed.Updated, &feed.Fetched); err != nil {
 			return Feed{}, err
 		}
 
@@ -184,6 +160,12 @@ func (db *newsfeedDB) GetFeedsByUserId(userId int) ([]Feed, error) {
 		if err != nil {
 			return nil, err
 		}
+
+		// limit items by users subscription setting
+		if len(feed.Items) > subscription.ShowEntries {
+			feed.Items = feed.Items[0:subscription.ShowEntries]
+		}
+
 		feeds = append(feeds, feed)
 	}
 	return feeds, nil
@@ -200,7 +182,7 @@ func (db *newsfeedDB) GetItemsByFeedId(feedId int) ([]Item, error) {
 			i.published
 		from item i
 		where i.fk_feed_id = ?
-		order by i.fk_user_id asc, i.fk_feed_id asc`)
+		order by i.updated desc, i.published desc, i.title asc, i.pk_feed_item_id asc, i.fk_feed_id asc`)
 	if err != nil {
 		return nil, err
 	}
@@ -222,10 +204,4 @@ func (db *newsfeedDB) GetItemsByFeedId(feedId int) ([]Item, error) {
 		items = append(items, item)
 	}
 	return items, nil
-}
-
-func (db *newsfeedDB) Housekeeping(entries int) (err error) {
-	// TODO: housekeeping logic: select count(*) from feed order by timestamp desc
-	// if count > $entries, then: delete from feed until count <= $entries
-	return nil
 }

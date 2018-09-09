@@ -6,7 +6,6 @@ import (
 
 	"github.com/anyandrea/newsfeed/lib/database/newsfeeddb"
 	"github.com/anyandrea/newsfeed/lib/web"
-	"github.com/mmcdole/gofeed"
 )
 
 func Index(db newsfeeddb.NewsFeedDB) func(rw http.ResponseWriter, req *http.Request) {
@@ -16,25 +15,18 @@ func Index(db newsfeeddb.NewsFeedDB) func(rw http.ResponseWriter, req *http.Requ
 			Active: "feeds",
 		}
 
-		// get feeds
-		var feeds []*gofeed.Feed
-		parser := gofeed.NewParser()
-		urls := []string{
-			"https://www.iracing.com/category/news/sim-racing-news/feed/",
-			"https://www.heise.de/newsticker/heise-atom.xml",
-			"https://news.ycombinator.com/rss",
-			"https://www.reddit.com/r/iracing.rss",
-			"https://www.reddit.com/r/simracing.rss",
+		// TODO: get feed from currently logged in user
+		// TODO: if no user is logged in, get feeds from admin user
+		users, err := db.GetUsers()
+		if err != nil {
+			Error(rw, err)
+			return
 		}
-		for _, url := range urls {
-			feed, err := parser.ParseURL(url)
-			// if err != nil {
-			// 	Error(rw, err)
-			// 	return
-			// }
-			if err == nil {
-				feeds = append(feeds, feed)
-			}
+
+		feeds, err := db.GetFeedsByUserId(users[0].Id)
+		if err != nil {
+			Error(rw, err)
+			return
 		}
 		page.Content = feeds
 
@@ -58,6 +50,16 @@ func Error(rw http.ResponseWriter, err error) {
 		Content: err,
 	}
 	web.Render().HTML(rw, http.StatusInternalServerError, "error", page)
+}
+
+func FetchFeeds(db newsfeeddb.NewsFeedDB) func(rw http.ResponseWriter, req *http.Request) {
+	return func(rw http.ResponseWriter, req *http.Request) {
+		if err := db.FetchAllFeeds(); err != nil {
+			Error(rw, err)
+			return
+		}
+		Index(db)(rw, req)
+	}
 }
 
 func Settings(db newsfeeddb.NewsFeedDB) func(rw http.ResponseWriter, req *http.Request) {
