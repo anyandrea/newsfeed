@@ -10,27 +10,25 @@ import (
 
 func Account(db newsfeeddb.NewsFeedDB, sm *scs.Manager) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
-		page := &Page{
-			Title:  "Newsfeed - Account",
-			Active: "account",
-		}
-
-		// get user_id from session
 		session := sm.Load(req)
-		userId, err := session.GetInt("user_id")
-		if err != nil {
-			Error(rw, err)
-			return
-		}
-
+		userId, _ := session.GetInt("user_id")
 		if userId == 0 {
-			// TODO: require and display login page
 			http.Redirect(rw, req, "/login", http.StatusFound)
 			return
 		}
 
-		// TODO: display account page for logged-in user
+		user, err := db.GetUserById(userId)
+		if err != nil {
+			Error(sm, rw, req, err)
+			return
+		}
 
+		// TODO: display account page for logged-in user
+		page := &Page{
+			Title:  "Newsfeed - Account",
+			Active: "account",
+			User:   user.Name,
+		}
 		web.Render().HTML(rw, http.StatusOK, "account", page)
 	}
 }

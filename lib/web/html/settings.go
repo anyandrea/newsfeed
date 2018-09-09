@@ -10,26 +10,20 @@ import (
 
 func Settings(db newsfeeddb.NewsFeedDB, sm *scs.Manager) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
-		page := &Page{
-			Title:  "Newsfeed - Settings",
-			Active: "settings",
-		}
-
-		// get user_id from session
 		session := sm.Load(req)
-		userId, err := session.GetInt("user_id")
-		if err != nil {
-			Error(rw, err)
-			return
-		}
-
+		userId, _ := session.GetInt("user_id")
 		if userId == 0 {
 			Unauthorized(rw)
 			return
 		}
 
 		// TODO: display settings page for logged-in user
-
+		userName, _ := session.GetString("user_name")
+		page := &Page{
+			Title:  "Newsfeed - Settings",
+			Active: "settings",
+			User:   userName,
+		}
 		web.Render().HTML(rw, http.StatusOK, "settings", page)
 	}
 }

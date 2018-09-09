@@ -5,6 +5,7 @@ import (
 
 	"github.com/alexedwards/scs"
 	"github.com/anyandrea/newsfeed/lib/database/newsfeeddb"
+	"github.com/anyandrea/newsfeed/lib/util"
 	"github.com/anyandrea/newsfeed/lib/web"
 )
 
@@ -19,13 +20,9 @@ func Login(db newsfeeddb.NewsFeedDB, sm *scs.Manager) func(rw http.ResponseWrite
 	return func(rw http.ResponseWriter, req *http.Request) {
 		session := sm.Load(req)
 
-		page := &Page{
-			Title: "Newsfeed - Login",
-		}
-
-		// get login data
+		// get form login data
 		if err := req.ParseForm(); err != nil {
-			Error(rw, err)
+			Error(sm, rw, req, err)
 			return
 		}
 		email := req.FormValue("email")
@@ -35,30 +32,26 @@ func Login(db newsfeeddb.NewsFeedDB, sm *scs.Manager) func(rw http.ResponseWrite
 		if len(email) > 0 && len(password) > 0 {
 			user, err := db.GetUserByEmail(email)
 			if err != nil {
-				Error(rw, err)
+				Error(sm, rw, req, err)
 				return
 			}
-			if user.Id != 0 &&
-				user.Password == password {
-				if err := session.PutInt(rw, "user_id", user.Id); err != nil {
-					Error(rw, err)
-					return
-				}
+
+			if user.Id != 0 && util.ComparePasswords(user.Password, password) { // correct password?
+				session.PutInt(rw, "user_id", user.Id) // store session
+				session.PutString(rw, "user_name", user.Name)
 			}
 		}
 
 		// get user_id from session
-		userId, err := session.GetInt("user_id")
-		if err != nil {
-			Error(rw, err)
-			return
-		}
-
-		if userId != 0 {
+		userId, _ := session.GetInt("user_id")
+		if userId != 0 { // valid session, redirect to account page
 			http.Redirect(rw, req, "/account", http.StatusFound)
 			return
 		}
 
+		page := &Page{
+			Title: "Newsfeed - Login",
+		}
 		web.Render().HTML(rw, http.StatusOK, "login", page)
 	}
 }
@@ -67,7 +60,7 @@ func Logout(db newsfeeddb.NewsFeedDB, sm *scs.Manager) func(rw http.ResponseWrit
 	return func(rw http.ResponseWriter, req *http.Request) {
 		session := sm.Load(req)
 		if err := session.Destroy(rw); err != nil {
-			Error(rw, err)
+			Error(sm, rw, req, err)
 			return
 		}
 		http.Redirect(rw, req, "/login", http.StatusFound)

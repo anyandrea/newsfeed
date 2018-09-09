@@ -36,6 +36,46 @@ func (db *newsfeedDB) GetUsers() ([]User, error) {
 	return users, nil
 }
 
+func (db *newsfeedDB) GetUserById(userId int) (User, error) {
+	stmt, err := db.Prepare(`
+		select
+			u.pk_user_id,
+			u.password,
+			u.name,
+			u.email,
+			u.role,
+			u.active
+		from user u
+		where u.pk_user_id = ?
+		order by u.email asc, u.name asc`)
+	if err != nil {
+		return User{}, err
+	}
+	defer stmt.Close()
+
+	rows, err := stmt.Query(userId)
+	if err != nil {
+		return User{}, err
+	}
+	defer rows.Close()
+
+	var user User
+	for rows.Next() {
+		// get user
+		if err := rows.Scan(&user.Id, &user.Password, &user.Name, &user.Email, &user.Role, &user.Active); err != nil {
+			return User{}, err
+		}
+
+		// get users subscriptions
+		var err error
+		user.Subscriptions, err = db.GetSubscriptionsByUserId(user.Id)
+		if err != nil {
+			return User{}, err
+		}
+	}
+	return user, nil
+}
+
 func (db *newsfeedDB) GetUserByEmail(email string) (User, error) {
 	stmt, err := db.Prepare(`
 		select

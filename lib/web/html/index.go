@@ -11,24 +11,15 @@ import (
 
 func Index(db newsfeeddb.NewsFeedDB, sm *scs.Manager) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
-		page := &Page{
-			Title:  "Newsfeed",
-			Active: "feeds",
-		}
-
-		// get user_id from session
 		session := sm.Load(req)
-		userId, err := session.GetInt("user_id")
-		if err != nil {
-			Error(rw, err)
-			return
-		}
+		userName, _ := session.GetString("user_name")
+		userId, _ := session.GetInt("user_id")
 
 		// if no actual user is logged in, then display admin account's feed subscriptions
 		if userId == 0 {
 			user, err := db.GetUserByEmail("admin@localhost")
 			if err != nil {
-				Error(rw, err)
+				Error(sm, rw, req, err)
 				return
 			}
 			userId = user.Id
@@ -37,50 +28,59 @@ func Index(db newsfeeddb.NewsFeedDB, sm *scs.Manager) func(rw http.ResponseWrite
 		// get feeds
 		feeds, err := db.GetFeedsByUserId(userId)
 		if err != nil {
-			Error(rw, err)
+			Error(sm, rw, req, err)
 			return
 		}
-		page.Content = feeds
 
+		page := &Page{
+			Title:   "Newsfeed",
+			Active:  "feeds",
+			User:    userName,
+			Content: feeds,
+		}
 		web.Render().HTML(rw, http.StatusOK, "index", page)
 	}
 }
 
-func NotFound(rw http.ResponseWriter, req *http.Request) {
-	page := &Page{
-		Title: "Newsfeed - Not Found",
+func NotFound(sm *scs.Manager) func(rw http.ResponseWriter, req *http.Request) {
+	return func(rw http.ResponseWriter, req *http.Request) {
+		session := sm.Load(req)
+		userName, _ := session.GetString("user_name")
+		page := &Page{
+			Title: "Newsfeed - Not Found",
+			User:  userName,
+		}
+		web.Render().HTML(rw, http.StatusNotFound, "not_found", page)
 	}
-	web.Render().HTML(rw, http.StatusNotFound, "not_found", page)
 }
 
-func ErrorHandler(rw http.ResponseWriter, req *http.Request) {
-	Error(rw, fmt.Errorf("Internal Server Error"))
+func ErrorHandler(sm *scs.Manager) func(rw http.ResponseWriter, req *http.Request) {
+	return func(rw http.ResponseWriter, req *http.Request) {
+		Error(sm, rw, req, fmt.Errorf("Internal Server Error"))
+	}
 }
-func Error(rw http.ResponseWriter, err error) {
+func Error(sm *scs.Manager, rw http.ResponseWriter, req *http.Request, err error) {
+	session := sm.Load(req)
+	userName, _ := session.GetString("user_name")
 	page := &Page{
 		Title:   "Newsfeed - Error",
 		Content: err,
+		User:    userName,
 	}
 	web.Render().HTML(rw, http.StatusInternalServerError, "error", page)
 }
 
 func FetchFeeds(db newsfeeddb.NewsFeedDB, sm *scs.Manager) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
-		// get user_id from session
 		session := sm.Load(req)
-		userId, err := session.GetInt("user_id")
-		if err != nil {
-			Error(rw, err)
-			return
-		}
-
+		userId, _ := session.GetInt("user_id")
 		if userId == 0 {
 			Unauthorized(rw)
 			return
 		}
 
 		if err := db.FetchAllFeeds(); err != nil {
-			Error(rw, err)
+			Error(sm, rw, req, err)
 			return
 		}
 		Index(db, sm)(rw, req)

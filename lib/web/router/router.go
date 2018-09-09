@@ -17,10 +17,10 @@ func New(db newsfeeddb.NewsFeedDB, sm *scs.Manager) *mux.Router {
 
 func setupRoutes(db newsfeeddb.NewsFeedDB, sm *scs.Manager, router *mux.Router) *mux.Router {
 	// HTML
-	router.NotFoundHandler = http.HandlerFunc(html.NotFound)
+	router.NotFoundHandler = http.HandlerFunc(html.NotFound(sm))
 
 	router.HandleFunc("/", html.Index(db, sm))
-	router.HandleFunc("/error", html.ErrorHandler)
+	router.HandleFunc("/error", html.ErrorHandler(sm))
 	router.HandleFunc("/fetch", html.FetchFeeds(db, sm))
 
 	router.HandleFunc("/login", html.Login(db, sm))
