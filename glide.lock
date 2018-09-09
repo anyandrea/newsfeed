@@ -1,21 +1,25 @@
-hash: 3233153c0f50d4c404b07a101365ea1ac74af2f647c2345b5a81e36dcfe5e3fb
-updated: 2018-09-08T12:09:00.654749985+02:00
+hash: f4b79691dd95c30f40b4abb658f38c45337aab5e05e56826d1fc7d66d198ae28
+updated: 2018-09-09T18:01:43.128266943+02:00
 imports:
 - name: github.com/andybalholm/cascadia
   version: 901648c87902174f774fac311d7f176f8647bdaa
 - name: github.com/cloudfoundry-community/go-cfenv
   version: f920e9562d5f951cbf11785728f67258c38a10d0
 - name: github.com/go-sql-driver/mysql
-  version: 99ff426eb706cffe92ff3d058e168b278cabf7c7
-- name: github.com/gorilla/mux
-  version: 9e1f5955c0d22b55d9e20d6faa28589f83b2faca
-- name: github.com/mattes/migrate
-  version: 4768a648fbd9e04389a73a21139d14a4ccb1a61a
+  version: d523deb1b23d913de5bdada721a6071e71283618
+- name: github.com/golang-migrate/migrate
+  version: 93d53a5ae84d81945eedadfe8f6865530d61d51c
   subpackages:
   - database
   - database/mysql
   - source
   - source/file
+- name: github.com/gorilla/context
+  version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
+- name: github.com/gorilla/mux
+  version: e3702bed27f0d39777b0b37b664b6280e8ef8fbf
+- name: github.com/gorilla/sessions
+  version: 81547393f870a35be888759a606ba7bf71dbe5c7
 - name: github.com/mitchellh/mapstructure
   version: fa473d140ef3c6adf42d6b391fe76707f1f243c8
 - name: github.com/mmcdole/gofeed

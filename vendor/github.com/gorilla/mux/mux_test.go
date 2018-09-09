@@ -1323,15 +1323,6 @@ func TestNamedRoutes(t *testing.T) {
 	}
 }
 
-func TestNameMultipleCalls(t *testing.T) {
-	r1 := NewRouter()
-	rt := r1.NewRoute().Name("foo").Name("bar")
-	err := rt.GetError()
-	if err == nil {
-		t.Errorf("Expected an error")
-	}
-}
-
 func TestStrictSlash(t *testing.T) {
 	r := NewRouter()
 	r.StrictSlash(true)

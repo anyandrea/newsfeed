@@ -20,9 +20,10 @@ func setupRoutes(db newsfeeddb.NewsFeedDB, router *mux.Router) *mux.Router {
 
 	router.HandleFunc("/", html.Index(db))
 	router.HandleFunc("/error", html.ErrorHandler)
-
 	router.HandleFunc("/fetch", html.FetchFeeds(db))
+
 	router.HandleFunc("/settings", html.Settings(db))
+	router.HandleFunc("/account", html.Account(db))
 
 	return router
 }

@@ -2,16 +2,21 @@ package: github.com/anyandrea/newsfeed
 import:
 - package: github.com/cloudfoundry-community/go-cfenv
 - package: github.com/go-sql-driver/mysql
+  version: ^1.4.0
 - package: github.com/gorilla/mux
-- package: github.com/mattes/migrate
+  version: ^1.6.2
+- package: github.com/golang-migrate/migrate
+  version: ^3.5.1
   subpackages:
   - database/mysql
-  - source/file
 - package: github.com/unrolled/render
 - package: github.com/urfave/negroni
+  version: ^1.0.0
 - package: github.com/mmcdole/gofeed
 - package: github.com/PuerkitoBio/goquery
   version: ^1.4.1
+- package: github.com/gorilla/sessions
+  version: ^1.1.2
 testImport:
 - package: github.com/stretchr/testify
   subpackages:
