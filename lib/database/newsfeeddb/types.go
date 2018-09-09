@@ -9,6 +9,7 @@ import (
 
 type NewsFeedDB interface {
 	GetUsers() ([]User, error)
+	GetUserByEmail(string) (User, error)
 	GetSubscriptionsByUserId(int) ([]Subscription, error)
 	GetSubscriptionsByFeedId(int) ([]Subscription, error)
 	GetFeedById(int) (Feed, error)

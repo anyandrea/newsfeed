@@ -1,6 +1,8 @@
-hash: f4b79691dd95c30f40b4abb658f38c45337aab5e05e56826d1fc7d66d198ae28
-updated: 2018-09-09T18:01:43.128266943+02:00
+hash: 09b1271807542126e03077bccd548ae28acd127404d9b4a6729e98ffd71ed5b0
+updated: 2018-09-09T18:22:55.949902248+02:00
 imports:
+- name: github.com/alexedwards/scs
+  version: a01923edcb7f83c0c6ae7e70ad03f293e6ec9e26
 - name: github.com/andybalholm/cascadia
   version: 901648c87902174f774fac311d7f176f8647bdaa
 - name: github.com/cloudfoundry-community/go-cfenv
@@ -18,6 +20,8 @@ imports:
   version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
 - name: github.com/gorilla/mux
   version: e3702bed27f0d39777b0b37b664b6280e8ef8fbf
+- name: github.com/gorilla/securecookie
+  version: e59506cc896acb7f7bf732d4fdf5e25f7ccd8983
 - name: github.com/gorilla/sessions
   version: 81547393f870a35be888759a606ba7bf71dbe5c7
 - name: github.com/mitchellh/mapstructure
