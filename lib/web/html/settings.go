@@ -23,7 +23,7 @@ func Settings(db newsfeeddb.NewsFeedDB, sm *scs.Manager) func(rw http.ResponseWr
 			return
 		}
 
-		if userId < 1 {
+		if userId == 0 {
 			Unauthorized(rw)
 			return
 		}

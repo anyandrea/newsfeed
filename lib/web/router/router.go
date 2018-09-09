@@ -23,6 +23,9 @@ func setupRoutes(db newsfeeddb.NewsFeedDB, sm *scs.Manager, router *mux.Router) 
 	router.HandleFunc("/error", html.ErrorHandler)
 	router.HandleFunc("/fetch", html.FetchFeeds(db, sm))
 
+	router.HandleFunc("/login", html.Login(db, sm))
+	router.HandleFunc("/logout", html.Logout(db, sm))
+
 	router.HandleFunc("/settings", html.Settings(db, sm))
 	router.HandleFunc("/account", html.Account(db, sm))
 

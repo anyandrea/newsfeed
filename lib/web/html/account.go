@@ -23,14 +23,9 @@ func Account(db newsfeeddb.NewsFeedDB, sm *scs.Manager) func(rw http.ResponseWri
 			return
 		}
 
-		if userId < 1 {
+		if userId == 0 {
 			// TODO: require and display login page
-
-			// session := sm.Load(req)
-			// if err := session.PutString(rw, "message", "Hello world!"); err != nil {
-			// 	Error(rw, err)
-			// }
-			Unauthorized(rw)
+			http.Redirect(rw, req, "/login", http.StatusFound)
 			return
 		}
 

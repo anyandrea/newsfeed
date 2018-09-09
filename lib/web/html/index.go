@@ -25,7 +25,7 @@ func Index(db newsfeeddb.NewsFeedDB, sm *scs.Manager) func(rw http.ResponseWrite
 		}
 
 		// if no actual user is logged in, then display admin account's feed subscriptions
-		if userId < 1 {
+		if userId == 0 {
 			user, err := db.GetUserByEmail("admin@localhost")
 			if err != nil {
 				Error(rw, err)
@@ -64,13 +64,6 @@ func Error(rw http.ResponseWriter, err error) {
 	web.Render().HTML(rw, http.StatusInternalServerError, "error", page)
 }
 
-func Unauthorized(rw http.ResponseWriter) {
-	page := &Page{
-		Title: "Newsfeed - Unauthorized",
-	}
-	web.Render().HTML(rw, http.StatusUnauthorized, "unauthorized", page)
-}
-
 func FetchFeeds(db newsfeeddb.NewsFeedDB, sm *scs.Manager) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		// get user_id from session
@@ -81,7 +74,7 @@ func FetchFeeds(db newsfeeddb.NewsFeedDB, sm *scs.Manager) func(rw http.Response
 			return
 		}
 
-		if userId < 1 {
+		if userId == 0 {
 			Unauthorized(rw)
 			return
 		}

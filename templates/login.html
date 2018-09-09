@@ -1,0 +1,48 @@
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-half">
+
+        <form action="/login" method="POST">
+
+          <div class="field">
+            <label class="label">Email</label>
+            <div class="control has-icons-left has-icons-right">
+              <input class="input is-info" type="email" id="email" name="email" placeholder="Your email address" value="" required>
+              <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fas fa-exclamation-triangle"></i>
+              </span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Password</label>
+            <div class="control has-icons-left has-icons-right">
+              <input class="input is-info" type="password" id="password" name="password" placeholder="Your password" value="" required>
+              <span class="icon is-small is-left">
+                <i class="fas fa-key"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fas fa-exclamation-triangle"></i>
+              </span>
+            </div>
+          </div>
+
+          <div class="field is-grouped">
+            <div class="control">
+              <input type="submit" value="Login" class="button is-link">
+            </div>
+            <div class="control">
+              <input type="reset" value="Cancel" class="button">
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</section>
