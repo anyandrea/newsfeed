@@ -71,7 +71,7 @@ func (i *instance) NewRequest(method, urlStr string, body io.Reader) (*http.Requ
 	}
 
 	// Associate this request.
-	req, release := internal.RegisterTestRequest(req, i.apiURL, func(ctx context.Context) context.Context {
+	release := internal.RegisterTestRequest(req, i.apiURL, func(ctx context.Context) context.Context {
 		ctx = internal.WithAppIDOverride(ctx, "dev~"+i.appID)
 		return ctx
 	})
@@ -212,9 +212,7 @@ func (i *instance) startChild() (err error) {
 	if err != nil {
 		return err
 	}
-	if !(i.opts != nil && i.opts.SuppressDevAppServerLog) {
-		stderr = io.TeeReader(stderr, os.Stderr)
-	}
+	stderr = io.TeeReader(stderr, os.Stderr)
 	if err = i.child.Start(); err != nil {
 		return err
 	}
@@ -271,6 +269,7 @@ application: %s
 version: 1
 runtime: go
 api_version: go1
+vm: true
 
 handlers:
 - url: /.*

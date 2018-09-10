@@ -1,12 +1,14 @@
-hash: 09b1271807542126e03077bccd548ae28acd127404d9b4a6729e98ffd71ed5b0
-updated: 2018-09-09T18:22:55.949902248+02:00
+hash: a2710759b7314751408656d1f40e302651d08633ab4b176542627f1fec11ccf3
+updated: 2018-09-10T08:59:49.987469138+02:00
 imports:
 - name: github.com/alexedwards/scs
   version: a01923edcb7f83c0c6ae7e70ad03f293e6ec9e26
+  subpackages:
+  - stores/cookiestore
 - name: github.com/andybalholm/cascadia
   version: 901648c87902174f774fac311d7f176f8647bdaa
 - name: github.com/cloudfoundry-community/go-cfenv
-  version: f920e9562d5f951cbf11785728f67258c38a10d0
+  version: e84b5c116637ef174eb8c7d68a28bc7269b3b9cb
 - name: github.com/go-sql-driver/mysql
   version: d523deb1b23d913de5bdada721a6071e71283618
 - name: github.com/golang-migrate/migrate
@@ -25,7 +27,7 @@ imports:
 - name: github.com/gorilla/sessions
   version: 81547393f870a35be888759a606ba7bf71dbe5c7
 - name: github.com/mitchellh/mapstructure
-  version: fa473d140ef3c6adf42d6b391fe76707f1f243c8
+  version: f3009df150dadf309fdee4a54ed65c124afad715
 - name: github.com/mmcdole/gofeed
   version: 3ad502aa86dbc0f278e63a2badb7b3b1fa26d51e
   subpackages:
@@ -38,17 +40,25 @@ imports:
 - name: github.com/PuerkitoBio/goquery
   version: dc2ec5c7ca4d9aae063b79b9f581dd3ea6afd2b2
 - name: github.com/unrolled/render
-  version: 4206df6ff70175d219fdb4672ae157fbed820103
+  version: 65450fb6b2d3595beca39f969c411db8f8d5c806
 - name: github.com/urfave/negroni
   version: c6a59be0ce122566695fbd5e48a77f8f10c8a63a
+- name: golang.org/x/crypto
+  version: bfc286917c5fcb7420d7e3092b50bbfd31b38a98
+  subpackages:
+  - bcrypt
+  - blowfish
+  - nacl/secretbox
+  - poly1305
+  - salsa20/salsa
 - name: golang.org/x/net
-  version: 161cd47e91fd58ac17490ef4d742dc98bb4cf60e
+  version: 2491c5de3490fced2f6cff376127c667efeed857
   subpackages:
   - html
   - html/atom
   - html/charset
 - name: golang.org/x/text
-  version: 4ae1256249243a4eb350a9a372e126557f2aa346
+  version: 5c1cf69b5978e5a34c5f9ba09a83e56acc4b7877
   subpackages:
   - encoding
   - encoding/charmap
@@ -68,19 +78,19 @@ imports:
   - runes
   - transform
 - name: google.golang.org/appengine
-  version: 03cac3b07182cfb08c0d0c0b6ee72a1ceb151c92
+  version: 170382fa85b10b94728989dfcf6cc818b335c952
   subpackages:
   - cloudsql
 testImports:
 - name: github.com/davecgh/go-spew
-  version: d8f796af33cc11cb798c1aaeb27a4ebc5099927d
+  version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9
   subpackages:
   - spew
 - name: github.com/pmezard/go-difflib
-  version: 792786c7400a136282c1664665ae0a8db921c6c2
+  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
   subpackages:
   - difflib
 - name: github.com/stretchr/testify
-  version: 12b6f73e6084dad08a7c6e575284b177ecafbc71
+  version: f35b8ab0b5a2cef36673838d662e249dd9c94686
   subpackages:
   - assert
