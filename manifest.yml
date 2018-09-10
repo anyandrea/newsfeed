@@ -13,7 +13,7 @@ applications:
   - scapp.io
   - applicationcloud.io
   services:
-  - newsfeeddb
+  - newsfeed
   env:
     GOPACKAGENAME: github.com/anyandrea/newsfeed
     GOVERSION: go1.9
