@@ -16,5 +16,6 @@ applications:
   - newsfeeddb
   env:
     GOPACKAGENAME: github.com/anyandrea/newsfeed
+    GOVERSION: go1.9
   command: newsfeed
   path: .
